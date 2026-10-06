@@ -1,5 +1,7 @@
 # 📊 Analyse E-commerce Olist | PostgreSQL & Power BI
 
+![Dashboard principal](PowerBI/power_bi_performance globale_2.png
+
 ## 📌 Présentation du projet
 
 Ce projet consiste à analyser les données de la marketplace brésilienne **Olist** à travers un workflow complet de Data Analytics.
