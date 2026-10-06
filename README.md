@@ -1,6 +1,6 @@
 # 📊 Analyse E-commerce Olist | PostgreSQL & Power BI
 
-![Dashboard principal](PowerBI/power_bi_performance globale_2.png)
+![Dashboard principal](PowerBI/power_bi_performance%20globale_2.png)
 
 ## 📌 Présentation du projet
 
