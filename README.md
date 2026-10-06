@@ -2,31 +2,31 @@
 
 ## 📌 Présentation du projet
 
-Ce projet a pour objectif d'analyser les performances commerciales de la marketplace brésilienne **Olist** à l'aide de **PostgreSQL** et **Power BI**.
+Ce projet consiste à analyser les données de la marketplace brésilienne **Olist** à travers un workflow complet de Data Analytics.
 
-L'ambition de ce projet est de reproduire un workflow complet de Data Analyst, allant de l'importation des données jusqu'à la création d'un tableau de bord décisionnel.
+L'ensemble du projet a été réalisé à l'aide de **PostgreSQL**, **SQL** et **Power BI**, en suivant les différentes étapes d'un projet de Business Intelligence :
 
-Le projet couvre :
-
-- Importation et modélisation des données
+- Création du modèle de données
+- Importation et structuration des données
 - Contrôle qualité des données
-- Analyse exploratoire en SQL
+- Exploration et analyse métier en SQL
 - Création de vues métier
-- Développement d'un dashboard interactif Power BI
-- Documentation du projet sur GitHub
+- Conception d'un dashboard interactif Power BI
+
+L'objectif est de transformer des données transactionnelles brutes en indicateurs décisionnels exploitables.
 
 ---
 
 # 🎯 Objectifs métier
 
-L'analyse vise à répondre à plusieurs questions stratégiques :
+L'objectif du projet est de fournir une vision claire de la performance commerciale de la marketplace Olist à travers :
 
-- Comment évoluent les ventes dans le temps ?
-- Quels États génèrent le plus de chiffre d'affaires ?
-- Qui sont les meilleurs clients ?
-- Quelles catégories de produits performent le mieux ?
-- Comment se répartit le chiffre d'affaires entre les clients ?
-- Les commandes sont-elles livrées dans les délais prévus ?
+- Le suivi des ventes et du chiffre d'affaires.
+- L'analyse du comportement des clients.
+- L'identification des meilleurs clients.
+- L'étude des catégories de produits les plus performantes.
+- L'analyse géographique des ventes.
+- Le suivi de l'évolution de l'activité dans le temps.
 
 ---
 
@@ -101,26 +101,63 @@ Dashboard Power BI
 
 # 🧹 Contrôle qualité des données
 
-Avant toute analyse métier, plusieurs contrôles ont été réalisés afin de garantir la fiabilité des résultats.
+Avant toute analyse, plusieurs contrôles ont été réalisés afin de garantir la fiabilité et la cohérence des données importées dans PostgreSQL.
 
 ## Contrôles effectués
 
-- Recherche de doublons
-- Analyse des valeurs manquantes
-- Vérification des clés primaires
-- Vérification des relations entre les tables
-- Contrôle de cohérence des dates
-- Validation des règles métier
+### Vérification des volumes de données
 
-Cette étape permet d'assurer la qualité et la cohérence des données utilisées dans les analyses.
+Contrôle du nombre d'enregistrements importés dans :
+
+- customers
+- products
+- orders
+- order_items
+
+### Recherche de doublons
+
+Validation de l'unicité des identifiants :
+
+- customer_id
+- product_id
+- order_id
+- couple (order_id, order_item_id)
+
+### Contrôle des valeurs manquantes
+
+Analyse des valeurs NULL sur les colonnes critiques :
+
+- identifiants
+- catégories produits
+- dates de commande
+- dates de livraison
+- prix
+- frais de port
+
+### Contrôle de l'intégrité référentielle
+
+Vérification :
+
+- des commandes sans client associé
+- des lignes de commande sans produit associé
+
+### Contrôle de cohérence métier
+
+Vérification :
+
+- des prix négatifs ou nuls
+- des incohérences chronologiques dans les dates
+- des statuts de commande disponibles
+
+Cette étape garantit la qualité des données utilisées pour les analyses et le reporting.
 
 ---
 
 # 🔍 Analyse exploratoire SQL
 
-La phase d'exploration avait un double objectif :
+La phase d'exploration avait deux objectifs :
 
-1. Comprendre le fonctionnement du dataset.
+1. Comprendre le comportement des ventes et des clients.
 2. Mettre en pratique les principaux concepts SQL utilisés en entreprise.
 
 ---
@@ -131,13 +168,13 @@ La phase d'exploration avait un double objectif :
 
 **Question métier :**
 
-> Quels sont les différents statuts des commandes et leur répartition ?
+> Quels sont les différents statuts de commande et leur importance relative ?
 
-**Concepts SQL utilisés :**
+**Concepts SQL :**
 
 - GROUP BY
-- COUNT
-- Pourcentages
+- COUNT()
+- Calcul de pourcentages
 - CTE
 
 ---
@@ -146,13 +183,13 @@ La phase d'exploration avait un double objectif :
 
 **Question métier :**
 
-> Quels États génèrent le plus de commandes ?
+> Quels États génèrent le plus grand nombre de commandes ?
 
-**Concepts SQL utilisés :**
+**Concepts SQL :**
 
 - JOIN
 - GROUP BY
-- COUNT
+- COUNT()
 - RANK()
 
 ---
@@ -163,10 +200,10 @@ La phase d'exploration avait un double objectif :
 
 > Quels États génèrent le plus de revenus ?
 
-**Concepts SQL utilisés :**
+**Concepts SQL :**
 
-- SUM()
 - JOIN
+- SUM()
 - CTE
 - RANK()
 
@@ -176,11 +213,12 @@ La phase d'exploration avait un double objectif :
 
 **Question métier :**
 
-> Combien d'articles les clients achètent-ils en moyenne par commande ?
+> Combien d'articles sont achetés en moyenne par commande ?
 
-**Concepts SQL utilisés :**
+**Concepts SQL :**
 
 - Sous-requêtes
+- COUNT()
 - AVG()
 - MIN()
 - MAX()
@@ -191,9 +229,9 @@ La phase d'exploration avait un double objectif :
 
 **Question métier :**
 
-> Comment les ventes évoluent-elles dans le temps ?
+> Comment évolue l'activité commerciale dans le temps ?
 
-**Concepts SQL utilisés :**
+**Concepts SQL :**
 
 - DATE_TRUNC()
 - LAG()
@@ -206,9 +244,9 @@ La phase d'exploration avait un double objectif :
 
 **Question métier :**
 
-> Les commandes sont-elles livrées dans les délais estimés ?
+> Les commandes sont-elles livrées dans les délais annoncés ?
 
-**Concepts SQL utilisés :**
+**Concepts SQL :**
 
 - CASE WHEN
 - GROUP BY
@@ -220,9 +258,9 @@ La phase d'exploration avait un double objectif :
 
 **Question métier :**
 
-> Quelles catégories présentent un prix moyen supérieur à la moyenne générale du catalogue ?
+> Quelles catégories présentent un prix moyen supérieur à la moyenne du catalogue ?
 
-**Concepts SQL utilisés :**
+**Concepts SQL :**
 
 - AVG()
 - CTE
@@ -230,13 +268,13 @@ La phase d'exploration avait un double objectif :
 
 ---
 
-### 8. Top clients par chiffre d'affaires
+### 8. Classement des meilleurs clients
 
 **Question métier :**
 
-> Quels clients génèrent le plus de revenus ?
+> Quels clients génèrent le plus de chiffre d'affaires ?
 
-**Concepts SQL utilisés :**
+**Concepts SQL :**
 
 - SUM()
 - GROUP BY
@@ -244,13 +282,13 @@ La phase d'exploration avait un double objectif :
 
 ---
 
-### 9. Distribution du chiffre d'affaires client
+### 9. Distribution des prix par tranche
 
 **Question métier :**
 
-> Comment se répartissent les revenus entre les clients ?
+> Comment se répartissent les ventes selon les gammes de prix ?
 
-**Concepts SQL utilisés :**
+**Concepts SQL :**
 
 - CASE WHEN
 - COUNT()
@@ -261,15 +299,19 @@ La phase d'exploration avait un double objectif :
 
 # 💻 Compétences SQL démontrées
 
-Au cours du projet, les concepts SQL suivants ont été utilisés :
+Au travers des différentes analyses, les concepts suivants ont été mis en œuvre :
+
+✅ Création de tables relationnelles
+
+✅ Clés primaires et étrangères
 
 ✅ Jointures (JOIN)
 
 ✅ Agrégations (COUNT, SUM, AVG)
 
-✅ MIN / MAX
+✅ MIN() / MAX()
 
-✅ Expressions conditionnelles (CASE WHEN)
+✅ CASE WHEN
 
 ✅ Sous-requêtes
 
@@ -287,186 +329,94 @@ Au cours du projet, les concepts SQL suivants ont été utilisés :
 
 ✅ Calculs de pourcentages
 
-✅ Création de vues SQL
+✅ Création de vues métier
 
 ---
 
 # 🏗️ Création des vues métier
 
-Afin de faciliter l'exploitation des données dans Power BI, plusieurs vues métier ont été créées.
-
----
+Afin de simplifier l'exploitation des données dans Power BI, plusieurs vues SQL ont été créées.
 
 ## vw_sales
 
-Vue principale regroupant l'ensemble des informations nécessaires aux analyses commerciales.
+Vue principale regroupant les informations relatives :
 
-### Contenu
+- Aux commandes
+- Aux clients
+- Aux produits
+- À la géographie
+- Au chiffre d'affaires
 
-- Informations commandes
-- Informations clients
-- Informations produits
-- Informations géographiques
-- Revenus et frais de port
+### Colonnes principales
 
-### Objectif
+- Date de commande
+- Identifiant de commande
+- Client
+- Ville
+- État
+- Produit
+- Catégorie produit
+- Prix
+- Frais de port
 
-Disposer d'une source unique pour les analyses de vente et le reporting Power BI.
+Cette vue ne conserve que les commandes livrées afin de garantir la cohérence des indicateurs commerciaux.
 
 ---
 
 ## vw_customer_metrics
 
-Vue agrégée au niveau client.
+Vue agrégée au niveau du client.
 
 ### Indicateurs calculés
 
-- Chiffre d'affaires client
+- Chiffre d'affaires total
 - Nombre de commandes
 - Panier moyen
-- Informations géographiques
+- Ville
+- État
 
-### Objectif
+Cette vue facilite l'ensemble des analyses et segmentations clients réalisées dans Power BI.
 
-Faciliter les analyses de performance et de comportement client.
+---
+
+# 🎨 Conception du dashboard
+
+Le dashboard a été conçu selon une approche orientée décision.
+
+L'objectif est de permettre à un utilisateur métier d'obtenir rapidement une vision synthétique des performances tout en conservant la possibilité d'explorer les données grâce aux filtres interactifs.
+
+Des filtres globaux ont été intégrés pour permettre l'analyse selon :
+
+- La période
+- L'État
+- La catégorie de produit
+
+Le reporting est structuré autour de trois axes :
+
+### 📊 Performance globale des ventes
+
+Vue synthétique des performances commerciales.
+
+### 👥 Analyse de la clientèle
+
+Compréhension du comportement et de la valeur des clients.
+
+### 📦 Performance produits
+
+Analyse des catégories, des ventes et des produits les plus performants.
 
 ---
 
 # 📈 Dashboard Power BI
 
-Le dashboard a été construit à partir des vues SQL créées dans PostgreSQL.
+Le dashboard Power BI a été construit à partir des vues SQL créées dans PostgreSQL.
 
 ---
 
 ## 📊 Page 1 — Performance Globale des Ventes
 
+Cette page offre une vue d'ensemble de l'activité commerciale.
+
 ### KPI
 
 - Chiffre d'affaires total
-- Nombre de commandes
-- Nombre de clients
-- Panier moyen
-
-### Analyses
-
-- Évolution des ventes
-- Répartition du CA par État
-- Répartition du CA par catégorie
-- Évolution des commandes dans le temps
-
----
-
-## 👥 Page 2 — Analyse de la Clientèle
-
-### KPI
-
-- Nombre total de clients
-- CA moyen par client
-- Nombre moyen de commandes par client
-- Meilleur client
-
-### Analyses
-
-- Top clients
-- Répartition des clients par État
-- Distribution du chiffre d'affaires client
-
----
-
-## 📦 Page 3 — Produits et Répartition Géographique
-
-### KPI
-
-- Nombre de catégories
-- Nombre de produits vendus
-- Prix moyen
-- Catégorie la plus performante
-
-### Analyses
-
-- Top catégories
-- Répartition du chiffre d'affaires par catégorie
-- Analyse géographique des ventes
-- Classement des États
-
----
-
-# 📸 Aperçu du Dashboard
-
-## Page 1 - Vue d'ensemble
-
-screenshots/overview.png
-
----
-
-## Page 2 - Analyse Clients
-
-screenshots/customers.png
-
----
-
-## Page 3 - Produits & Géographie
-
-screenshots/products.png
-
----
-
-# 📊 Principaux enseignements
-
-Les analyses ont permis d'identifier plusieurs tendances :
-
-- Une concentration importante du chiffre d'affaires sur certains États.
-- Une répartition hétérogène des revenus entre les clients.
-- Des catégories de produits plus performantes que d'autres.
-- Une saisonnalité observable des ventes.
-- Une performance logistique globalement satisfaisante.
-- Des différences significatives de comportement selon les régions.
-
----
-
-# 🚀 Compétences développées
-
-Ce projet m'a permis de mettre en pratique :
-
-- La modélisation de données
-- Les contrôles qualité
-- L'analyse exploratoire SQL
-- Les requêtes SQL avancées
-- La création de vues métier
-- Le développement de tableaux de bord Power BI
-- La documentation et la publication d'un projet Data
-
----
-
-# 📬 Contact
-
-**Alexis Medouze**
-
-Data Analyst
-
-Compétences :
-- SQL
-- PostgreSQL
-- Power BI
-- Data Visualization
-- Business Intelligence
-
----
-
-# ⭐ Points forts du projet
-
-✅ Projet complet de Data Analytics
-
-✅ PostgreSQL 15
-
-✅ SQL avancé
-
-✅ Contrôle qualité des données
-
-✅ Analyses orientées métier
-
-✅ Dashboard Power BI interactif
-
-✅ Documentation GitHub
-
-✅ Workflow Data Analyst de bout en bout
